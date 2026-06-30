@@ -1,11 +1,11 @@
-from dotenv import load_dotenv
+
 import os
 import psycopg2
 from typing import TypedDict
 from langgraph.graph import StateGraph
 from openai import OpenAI
 from datetime import datetime, timedelta
-load_dotenv()
+
 
 db_pass = os.getenv("DATABASE_PASS")
 

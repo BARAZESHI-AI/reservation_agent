@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
-from dotenv import load_dotenv
+
 import os
 import psycopg2
 from agent_main import app as ai_app
@@ -8,7 +8,7 @@ from agent_main import app as ai_app
 # -------------------------
 # تنظیمات
 # -------------------------
-load_dotenv()
+
 db_pass = os.getenv("DATABASE_PASS")
 
 conn = psycopg2.connect(
