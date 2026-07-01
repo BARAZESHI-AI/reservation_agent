@@ -292,7 +292,8 @@ def other(state):
 
 
 def finalli(state):
-    prompt = f"""Give the user a nice answer based on the information I give you.information: {state['answer']}"""
+    prompt = f"""Give the user a nice answer based on the information I give you.information: {state['answer']}
+        ....if information = Unacceptable tell this time not okay"""
     res = response(prompt)
     state["answer"] = res
     return state
