@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
-
+from deep_translator import GoogleTranslator
 import os
 import psycopg2
 from agent_main import app as ai_app
@@ -46,14 +46,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ----------------------------------
     if user:
         user_id = user[0]
+        text2 = GoogleTranslator(source='fa', target='en').translate(text)
 
         result = ai_app.invoke({
-            "question": text,
+            "question": text2,
             "user_id": user_id,
             "conn": conn
         })
+        answer = GoogleTranslator(source='en', target='fa').translate(result["answer"])
 
-        await update.message.reply_text(result["answer"])
+        await update.message.reply_text(answer)
         return
 
     # ----------------------------------

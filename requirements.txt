@@ -3,3 +3,4 @@ python-telegram-bot~=22.8
 python-dotenv~=1.2.2
 langgraph~=1.2.7
 openai~=2.44.0
+deep-translator

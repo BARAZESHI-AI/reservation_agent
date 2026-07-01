@@ -7,16 +7,6 @@ from openai import OpenAI
 from datetime import datetime, timedelta
 
 
-db_pass = os.getenv("DATABASE_PASS")
-
-conn = psycopg2.connect(f"postgresql://postgres.suqjseiaqbffvdzyfbud:{db_pass}@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require")
-cur = conn.cursor()
-cur.execute("""SELECT id FROM users WHERE chat_id = %s""", (21458882,))
-r = cur.fetchone()
-print(r[0])
-conn.rollback()
-
-
 
 
 ai_api = os.getenv("AI_API")
@@ -50,6 +40,13 @@ def to_stime(now):
     if now.hour >= 17 or now.hour < 8:
         now = now + timedelta(days=1)
         now = now.replace(hour=8, minute=0, second=0, microsecond=0)
+    if now.weekday() == 3 and now.hour() >= 15:
+        now = now + timedelta(days=2)
+        now = now.replace(hour=8, minute=0, second=0, microsecond=0)
+    if now.weekday() == 4:
+        now = now + timedelta(days=1)
+        now = now.replace(hour=8, minute=0, second=0, microsecond=0)
+
 
     return now
 
@@ -63,7 +60,7 @@ def response(prompt):
             "role": "user",
             "content": prompt
           }
-        ],  max_tokens=200,
+        ],  max_tokens=50,
   extra_body={"reasoning": {"enabled": True}}
 )
     return client_response.choices[0].message.content
