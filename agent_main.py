@@ -1,6 +1,5 @@
 
 import os
-import psycopg2
 from typing import TypedDict
 from langgraph.graph import StateGraph
 from openai import OpenAI
@@ -40,7 +39,7 @@ def to_stime(now):
     if now.hour >= 17 or now.hour < 8:
         now = now + timedelta(days=1)
         now = now.replace(hour=8, minute=0, second=0, microsecond=0)
-    if now.weekday() == 3 and now.hour() >= 15:
+    if now.weekday() == 3 and now.hour >= 15:
         now = now + timedelta(days=2)
         now = now.replace(hour=8, minute=0, second=0, microsecond=0)
     if now.weekday() == 4:
@@ -51,7 +50,7 @@ def to_stime(now):
     return now
 
 def friday_thuersday(now):
-    if now.weekday() == 3 and now.hour() >= 15:
+    if now.weekday() == 3 and now.hour >= 15:
         return False
     if now.weekday() == 4:
         return False
