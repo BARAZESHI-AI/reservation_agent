@@ -50,6 +50,12 @@ def to_stime(now):
 
     return now
 
+def friday_thuersday(now):
+    if now.weekday() == 3 and now.hour() >= 15:
+        return False
+    if now.weekday() == 4:
+        return False
+    return True
 
 
 def response(prompt):
@@ -60,7 +66,7 @@ def response(prompt):
             "role": "user",
             "content": prompt
           }
-        ],  max_tokens=50,
+        ],  max_tokens=200,
   extra_body={"reasoning": {"enabled": True}}
 )
     return client_response.choices[0].message.content
@@ -122,6 +128,11 @@ Rules:
         if dt < now:
             state["time_stemp"] = "past"
             return state
+        tf = friday_thuersday(dt)
+        if not tf:
+            state["time_stemp"] = "Unacceptable"
+            return state
+
 
         # ✅ معتبره
         state["time_stemp"] = "yes"
@@ -209,6 +220,9 @@ def reserve_time(state):
             return state
         elif state["time_stemp"] == "past":
             state["answer"]="this time is past"
+            return state
+        elif state["time_stemp"] == "Unacceptable":
+            state["answer"] = "this time is Unacceptable "
             return state
     finally:
         cur.close()
